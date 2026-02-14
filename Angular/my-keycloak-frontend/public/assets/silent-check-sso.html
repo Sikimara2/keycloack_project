@@ -1,0 +1,13 @@
+<html>
+<body>
+  <!--
+    This file is used by Keycloak for silent SSO checks.
+    When the app loads, Keycloak opens this page in a hidden iframe
+    to check if the user already has an active session.
+    If they do, the user is automatically logged in without a redirect.
+  -->
+  <script>
+    parent.postMessage(location.href, location.origin);
+  </script>
+</body>
+</html>
