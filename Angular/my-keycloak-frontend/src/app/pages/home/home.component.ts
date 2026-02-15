@@ -17,7 +17,18 @@ import { KeycloakService } from '../../services/keycloak.service';
           <button class="btn" (click)="goToDashboard()">Go to Dashboard</button>
         </div>
       } @else {
-        <button class="btn" (click)="goToLogin()">Get Started</button>
+        <div class="login-options">
+          <h3>Choose your login method:</h3>
+          <button class="btn btn-primary" (click)="goToCustomLogin()">
+            Custom Login Form
+          </button>
+          <button class="btn btn-secondary" (click)="goToLogin()">
+            Keycloak Hosted Login
+          </button>
+          <p class="register-hint">
+            Don't have an account? <a (click)="goToCustomRegister()">Create one here</a>
+          </p>
+        </div>
       }
     </div>
   `,
@@ -26,11 +37,34 @@ import { KeycloakService } from '../../services/keycloak.service';
     h1 { color: #2d3748; font-size: 32px; margin-bottom: 12px; }
     p { color: #718096; font-size: 18px; }
     .authenticated-info { margin-top: 24px; }
+    .login-options { margin-top: 32px; }
+    .login-options h3 { color: #4a5568; font-size: 18px; margin-bottom: 20px; }
     .btn {
-      margin-top: 16px; padding: 12px 32px; background: #667eea; color: white;
-      border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 12px auto;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
     }
-    .btn:hover { background: #5a6fd6; }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+    .btn-secondary {
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+    .btn-secondary:hover { background: #f7fafc; }
+    .register-hint { margin-top: 24px; font-size: 14px; color: #718096; }
+    .register-hint a { color: #667eea; cursor: pointer; text-decoration: underline; }
   `],
 })
 export class HomeComponent {
@@ -38,5 +72,7 @@ export class HomeComponent {
   private readonly router = inject(Router);
 
   goToLogin(): void { this.router.navigate(['/login']); }
+  goToCustomLogin(): void { this.router.navigate(['/custom-login']); }
+  goToCustomRegister(): void { this.router.navigate(['/custom-register']); }
   goToDashboard(): void { this.router.navigate(['/dashboard']); }
 }

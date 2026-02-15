@@ -93,6 +93,9 @@ builder.Services.AddAuthorization(options =>
 // In production, use Scoped with a real database
 builder.Services.AddSingleton<UserService>();
 
+// Register KeycloakAdminService for custom registration and login
+builder.Services.AddHttpClient<KeycloakAdminService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

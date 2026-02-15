@@ -1,0 +1,794 @@
+<div class="register-container">
+  <!-- Role Selection Screen -->
+  @if (!selectedRole()) {
+    <div class="role-selection-card">
+      <h1>Create Your Account</h1>
+      <p class="subtitle">Select your role to get started</p>
+
+      <div class="roles-grid">
+        <div class="role-card" (click)="selectRole('admin')">
+          <div class="role-icon">👔</div>
+          <h3>Admin</h3>
+          <p>Full system access and user management</p>
+        </div>
+
+        <div class="role-card" (click)="selectRole('gerant')">
+          <div class="role-icon">👨‍💼</div>
+          <h3>Gerant (Manager)</h3>
+          <p>Manage transporteurs in your zone</p>
+        </div>
+
+        <div class="role-card" (click)="selectRole('transporteur')">
+          <div class="role-icon">🚚</div>
+          <h3>Transporteur (Driver)</h3>
+          <p>Handle deliveries and logistics</p>
+        </div>
+      </div>
+
+      <div class="login-link">
+        <p>Already have an account? <a routerLink="/custom-login">Sign In</a></p>
+      </div>
+    </div>
+  }
+
+  <!-- Registration Form -->
+  @if (selectedRole()) {
+    <div class="register-card">
+      <button type="button" class="back-btn" (click)="backToRoleSelection()">
+        ← Back to role selection
+      </button>
+
+      <h2>Register as {{ selectedRole() }}</h2>
+
+      <form (ngSubmit)="onSubmit()" #regForm="ngForm">
+        <!-- Common Fields Section -->
+        <div class="form-section">
+          <h3>Account Information</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input
+                id="firstName"
+                type="text"
+                [(ngModel)]="commonForm.firstName"
+                name="firstName"
+                required
+                placeholder="John"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input
+                id="lastName"
+                type="text"
+                [(ngModel)]="commonForm.lastName"
+                name="lastName"
+                required
+                placeholder="Doe"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input
+              id="email"
+              type="email"
+              [(ngModel)]="commonForm.email"
+              name="email"
+              required
+              email
+              placeholder="john.doe@example.com"
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">Password *</label>
+              <input
+                id="password"
+                type="password"
+                [(ngModel)]="commonForm.password"
+                name="password"
+                required
+                minlength="6"
+                placeholder="Minimum 6 characters"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password *</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                [(ngModel)]="commonForm.confirmPassword"
+                name="confirmPassword"
+                required
+                placeholder="Re-enter password"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin-specific Fields -->
+        @if (selectedRole() === 'admin') {
+          <div class="form-section">
+            <h3>Professional Details</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="department">Department *</label>
+                <input
+                  id="department"
+                  type="text"
+                  [(ngModel)]="adminForm.department"
+                  name="department"
+                  required
+                  placeholder="IT, Operations, HR, etc."
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="employeeId">Employee ID *</label>
+                <input
+                  id="employeeId"
+                  type="text"
+                  [(ngModel)]="adminForm.employeeId"
+                  name="employeeId"
+                  required
+                  placeholder="EMP001"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="jobTitle">Job Title *</label>
+                <input
+                  id="jobTitle"
+                  type="text"
+                  [(ngModel)]="adminForm.jobTitle"
+                  name="jobTitle"
+                  required
+                  placeholder="System Administrator"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number *</label>
+                <input
+                  id="phoneNumber"
+                  type="tel"
+                  [(ngModel)]="adminForm.phoneNumber"
+                  name="phoneNumber"
+                  required
+                  placeholder="+33 6 12 34 56 78"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="officeLocation">Office Location</label>
+                <input
+                  id="officeLocation"
+                  type="text"
+                  [(ngModel)]="adminForm.officeLocation"
+                  name="officeLocation"
+                  placeholder="Building A, Floor 3"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="directLine">Direct Line</label>
+                <input
+                  id="directLine"
+                  type="tel"
+                  [(ngModel)]="adminForm.directLine"
+                  name="directLine"
+                  placeholder="+33 1 23 45 67 89"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="hireDate">Hire Date</label>
+                <input
+                  id="hireDate"
+                  type="date"
+                  [(ngModel)]="adminForm.hireDate"
+                  name="hireDate"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="managerName">Manager Name</label>
+                <input
+                  id="managerName"
+                  type="text"
+                  [(ngModel)]="adminForm.managerName"
+                  name="managerName"
+                  placeholder="Jane Smith"
+                />
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h4>Permissions</h4>
+              <div class="checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="adminForm.canManageUsers"
+                    name="canManageUsers"
+                  />
+                  Can Manage Users
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="adminForm.canViewReports"
+                    name="canViewReports"
+                  />
+                  Can View Reports
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="adminForm.canManageSettings"
+                    name="canManageSettings"
+                  />
+                  Can Manage Settings
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="adminForm.canApproveExpenses"
+                    name="canApproveExpenses"
+                  />
+                  Can Approve Expenses
+                </label>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Gerant-specific Fields -->
+        @if (selectedRole() === 'gerant') {
+          <div class="form-section">
+            <h3>Contact Information</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="gPhoneNumber">Phone Number *</label>
+                <input
+                  id="gPhoneNumber"
+                  type="tel"
+                  [(ngModel)]="gerantForm.phoneNumber"
+                  name="gPhoneNumber"
+                  required
+                  placeholder="+33 6 12 34 56 78"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="mobileNumber">Mobile Number *</label>
+                <input
+                  id="mobileNumber"
+                  type="tel"
+                  [(ngModel)]="gerantForm.mobileNumber"
+                  name="mobileNumber"
+                  required
+                  placeholder="+33 7 12 34 56 78"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address *</label>
+              <input
+                id="address"
+                type="text"
+                [(ngModel)]="gerantForm.address"
+                name="address"
+                required
+                placeholder="123 Rue de la Paix"
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">City *</label>
+                <input
+                  id="city"
+                  type="text"
+                  [(ngModel)]="gerantForm.city"
+                  name="city"
+                  required
+                  placeholder="Paris"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="postalCode">Postal Code *</label>
+                <input
+                  id="postalCode"
+                  type="text"
+                  [(ngModel)]="gerantForm.postalCode"
+                  name="postalCode"
+                  required
+                  placeholder="75001"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Management Details</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="zone">Zone *</label>
+                <input
+                  id="zone"
+                  type="text"
+                  [(ngModel)]="gerantForm.zone"
+                  name="zone"
+                  required
+                  placeholder="North, South, East, West"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="maxTransporteurs">Max Transporteurs Managed *</label>
+                <input
+                  id="maxTransporteurs"
+                  type="number"
+                  [(ngModel)]="gerantForm.maxTransporteursManaged"
+                  name="maxTransporteurs"
+                  required
+                  min="1"
+                  max="100"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="yearsOfExp">Years of Experience *</label>
+                <input
+                  id="yearsOfExp"
+                  type="number"
+                  [(ngModel)]="gerantForm.yearsOfExperience"
+                  name="yearsOfExp"
+                  required
+                  min="0"
+                  max="50"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="previousEmployer">Previous Employer</label>
+                <input
+                  id="previousEmployer"
+                  type="text"
+                  [(ngModel)]="gerantForm.previousEmployer"
+                  name="previousEmployer"
+                  placeholder="Company Name"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Personal Information</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <input
+                  id="dateOfBirth"
+                  type="date"
+                  [(ngModel)]="gerantForm.dateOfBirth"
+                  name="dateOfBirth"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="nationality">Nationality</label>
+                <input
+                  id="nationality"
+                  type="text"
+                  [(ngModel)]="gerantForm.nationality"
+                  name="nationality"
+                  placeholder="French"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="languagesSpoken">Languages Spoken</label>
+              <input
+                id="languagesSpoken"
+                type="text"
+                [(ngModel)]="gerantForm.languagesSpoken"
+                name="languagesSpoken"
+                placeholder="French, English, Spanish"
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="emergencyContact">Emergency Contact Name</label>
+                <input
+                  id="emergencyContact"
+                  type="text"
+                  [(ngModel)]="gerantForm.emergencyContact"
+                  name="emergencyContact"
+                  placeholder="John Doe"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="emergencyPhone">Emergency Contact Phone</label>
+                <input
+                  id="emergencyPhone"
+                  type="tel"
+                  [(ngModel)]="gerantForm.emergencyPhone"
+                  name="emergencyPhone"
+                  placeholder="+33 6 12 34 56 78"
+                />
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Transporteur-specific Fields -->
+        @if (selectedRole() === 'transporteur') {
+          <div class="form-section">
+            <h3>Contact Information</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tPhoneNumber">Phone Number *</label>
+                <input
+                  id="tPhoneNumber"
+                  type="tel"
+                  [(ngModel)]="transporteurForm.phoneNumber"
+                  name="tPhoneNumber"
+                  required
+                  placeholder="+33 6 12 34 56 78"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="tMobileNumber">Mobile Number *</label>
+                <input
+                  id="tMobileNumber"
+                  type="tel"
+                  [(ngModel)]="transporteurForm.mobileNumber"
+                  name="tMobileNumber"
+                  required
+                  placeholder="+33 7 12 34 56 78"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="tAddress">Address *</label>
+              <input
+                id="tAddress"
+                type="text"
+                [(ngModel)]="transporteurForm.address"
+                name="tAddress"
+                required
+                placeholder="123 Rue de la Paix"
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tCity">City *</label>
+                <input
+                  id="tCity"
+                  type="text"
+                  [(ngModel)]="transporteurForm.city"
+                  name="tCity"
+                  required
+                  placeholder="Paris"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="tPostalCode">Postal Code *</label>
+                <input
+                  id="tPostalCode"
+                  type="text"
+                  [(ngModel)]="transporteurForm.postalCode"
+                  name="tPostalCode"
+                  required
+                  placeholder="75001"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>License Information</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="licenseNumber">License Number *</label>
+                <input
+                  id="licenseNumber"
+                  type="text"
+                  [(ngModel)]="transporteurForm.licenseNumber"
+                  name="licenseNumber"
+                  required
+                  placeholder="DL-123456789"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="licenseExpiryDate">License Expiry Date</label>
+                <input
+                  id="licenseExpiryDate"
+                  type="date"
+                  [(ngModel)]="transporteurForm.licenseExpiryDate"
+                  name="licenseExpiryDate"
+                />
+              </div>
+            </div>
+
+            <div class="checkbox-group">
+              <label>
+                <input
+                  type="checkbox"
+                  [(ngModel)]="transporteurForm.hasCommercialLicense"
+                  name="hasCommercialLicense"
+                />
+                Has Commercial License
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  [(ngModel)]="transporteurForm.hasHazmatCertification"
+                  name="hasHazmatCertification"
+                />
+                Has HAZMAT Certification
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Vehicle Information</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="vehicleType">Vehicle Type *</label>
+                <select
+                  id="vehicleType"
+                  [(ngModel)]="transporteurForm.vehicleType"
+                  name="vehicleType"
+                  required
+                >
+                  <option value="">Select vehicle type</option>
+                  <option value="Van">Van</option>
+                  <option value="Truck">Truck</option>
+                  <option value="Motorcycle">Motorcycle</option>
+                  <option value="Car">Car</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="vehiclePlate">Vehicle Plate *</label>
+                <input
+                  id="vehiclePlate"
+                  type="text"
+                  [(ngModel)]="transporteurForm.vehiclePlate"
+                  name="vehiclePlate"
+                  required
+                  placeholder="AB-123-CD"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="vehicleMake">Vehicle Make</label>
+                <input
+                  id="vehicleMake"
+                  type="text"
+                  [(ngModel)]="transporteurForm.vehicleMake"
+                  name="vehicleMake"
+                  placeholder="Renault, Peugeot, etc."
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="vehicleModel">Vehicle Model</label>
+                <input
+                  id="vehicleModel"
+                  type="text"
+                  [(ngModel)]="transporteurForm.vehicleModel"
+                  name="vehicleModel"
+                  placeholder="Master, Partner, etc."
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="vehicleYear">Vehicle Year</label>
+                <input
+                  id="vehicleYear"
+                  type="number"
+                  [(ngModel)]="transporteurForm.vehicleYear"
+                  name="vehicleYear"
+                  min="1900"
+                  [max]="2025"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="vehicleColor">Vehicle Color</label>
+                <input
+                  id="vehicleColor"
+                  type="text"
+                  [(ngModel)]="transporteurForm.vehicleColor"
+                  name="vehicleColor"
+                  placeholder="White, Blue, etc."
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Insurance Information</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="insuranceProvider">Insurance Provider</label>
+                <input
+                  id="insuranceProvider"
+                  type="text"
+                  [(ngModel)]="transporteurForm.insuranceProvider"
+                  name="insuranceProvider"
+                  placeholder="AXA, Allianz, etc."
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="insurancePolicyNumber">Policy Number</label>
+                <input
+                  id="insurancePolicyNumber"
+                  type="text"
+                  [(ngModel)]="transporteurForm.insurancePolicyNumber"
+                  name="insurancePolicyNumber"
+                  placeholder="POL-123456"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="insuranceExpiryDate">Insurance Expiry Date</label>
+              <input
+                id="insuranceExpiryDate"
+                type="date"
+                [(ngModel)]="transporteurForm.insuranceExpiryDate"
+                name="insuranceExpiryDate"
+              />
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Personal Information</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tDateOfBirth">Date of Birth</label>
+                <input
+                  id="tDateOfBirth"
+                  type="date"
+                  [(ngModel)]="transporteurForm.dateOfBirth"
+                  name="tDateOfBirth"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="tNationality">Nationality</label>
+                <input
+                  id="tNationality"
+                  type="text"
+                  [(ngModel)]="transporteurForm.nationality"
+                  name="tNationality"
+                  placeholder="French"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tYearsOfExp">Years of Experience *</label>
+                <input
+                  id="tYearsOfExp"
+                  type="number"
+                  [(ngModel)]="transporteurForm.yearsOfExperience"
+                  name="tYearsOfExp"
+                  required
+                  min="0"
+                  max="50"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="tLanguagesSpoken">Languages Spoken</label>
+                <input
+                  id="tLanguagesSpoken"
+                  type="text"
+                  [(ngModel)]="transporteurForm.languagesSpoken"
+                  name="tLanguagesSpoken"
+                  placeholder="French, English, Spanish"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tEmergencyContact">Emergency Contact Name</label>
+                <input
+                  id="tEmergencyContact"
+                  type="text"
+                  [(ngModel)]="transporteurForm.emergencyContact"
+                  name="tEmergencyContact"
+                  placeholder="John Doe"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="tEmergencyPhone">Emergency Contact Phone</label>
+                <input
+                  id="tEmergencyPhone"
+                  type="tel"
+                  [(ngModel)]="transporteurForm.emergencyPhone"
+                  name="tEmergencyPhone"
+                  placeholder="+33 6 12 34 56 78"
+                />
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Error/Success Messages -->
+        @if (errorMessage()) {
+          <div class="error-message">{{ errorMessage() }}</div>
+        }
+
+        @if (successMessage()) {
+          <div class="success-message">{{ successMessage() }}</div>
+        }
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="!regForm.form.valid || isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="spinner"></span>
+            Creating account...
+          } @else {
+            Create Account
+          }
+        </button>
+      </form>
+
+      <div class="login-link">
+        <p>Already have an account? <a routerLink="/custom-login">Sign In</a></p>
+      </div>
+    </div>
+  }
+</div>

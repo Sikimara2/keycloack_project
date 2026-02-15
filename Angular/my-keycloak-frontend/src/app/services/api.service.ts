@@ -21,7 +21,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'https://localhost:7234/api';
+  private readonly baseUrl = 'http://localhost:5157/api';
 
   // --- Profile endpoints (any authenticated user) ---
 
@@ -97,5 +97,23 @@ export class ApiService {
 
   updateAvailability(isAvailable: boolean): Observable<unknown> {
     return this.http.put(`${this.baseUrl}/transporteur/availability`, { isAvailable });
+  }
+
+  // --- Custom Auth endpoints ---
+
+  login(credentials: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/auth/login`, credentials);
+  }
+
+  registerAdminFull(data: any): Observable<unknown> {
+    return this.http.post(`${this.baseUrl}/auth/register/admin`, data);
+  }
+
+  registerGerantFull(data: any): Observable<unknown> {
+    return this.http.post(`${this.baseUrl}/auth/register/gerant`, data);
+  }
+
+  registerTransporteurFull(data: any): Observable<unknown> {
+    return this.http.post(`${this.baseUrl}/auth/register/transporteur`, data);
   }
 }
