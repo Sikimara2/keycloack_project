@@ -23,11 +23,23 @@ export const routes: Routes = [
       import('./pages/login/login.component').then((m) => m.LoginComponent),
   },
   {
+    path: 'custom-login',
+    loadComponent: () =>
+      import('./pages/login/custom-login.component').then((m) => m.CustomLoginComponent),
+  },
+  {
     path: 'register',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/register/register.component').then(
         (m) => m.RegisterComponent
+      ),
+  },
+  {
+    path: 'custom-register',
+    loadComponent: () =>
+      import('./pages/register/custom-register.component').then(
+        (m) => m.CustomRegisterComponent
       ),
   },
   {

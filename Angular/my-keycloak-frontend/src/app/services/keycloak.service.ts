@@ -165,4 +165,54 @@ export class KeycloakService {
     const allRoles = [...new Set([...realmRoles, ...clientRoles])];
     this._userRoles.set(allRoles);
   }
+
+  /**
+   * Set custom auth tokens from backend login.
+   * Used when logging in via custom form instead of Keycloak hosted page.
+   */
+  async setCustomAuthTokens(
+    accessToken: string,
+    refreshToken: string,
+    userInfo: any
+  ): Promise<void> {
+    // Store tokens in localStorage for persistence
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('refresh_token', refreshToken);
+
+    // Update auth state
+    this._isAuthenticated.set(true);
+    this._userEmail.set(userInfo.email);
+    this._firstName.set(userInfo.firstName);
+    this._lastName.set(userInfo.lastName);
+    this._userName.set(userInfo.email);
+    this._userRoles.set(userInfo.roles);
+
+    // Initialize Keycloak with the token
+    if (!this.keycloak) {
+      this.keycloak = new Keycloak({
+        url: 'http://localhost:8080',
+        realm: 'transport-realm',
+        clientId: 'transport-app',
+      });
+    }
+
+    // Set the token manually
+    this.keycloak.token = accessToken;
+    this.keycloak.refreshToken = refreshToken;
+    this.keycloak.authenticated = true;
+  }
+
+  /**
+   * Check if user is authenticated (works for both Keycloak and custom auth)
+   */
+  isAuthenticatedCheck(): boolean {
+    return this._isAuthenticated() || !!localStorage.getItem('access_token');
+  }
+
+  /**
+   * Get token for custom auth
+   */
+  async getCustomToken(): Promise<string> {
+    return localStorage.getItem('access_token') || '';
+  }
 }

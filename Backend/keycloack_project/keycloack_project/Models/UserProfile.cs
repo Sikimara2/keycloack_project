@@ -23,9 +23,16 @@ public class AdminProfile : UserProfile
 {
     public string Department { get; set; } = string.Empty;
     public string EmployeeId { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
+    public string JobTitle { get; set; } = string.Empty;
+    public string? OfficeLocation { get; set; }
+    public string? DirectLine { get; set; }
+    public DateTime? HireDate { get; set; }
+    public string? ManagerName { get; set; }
     public bool CanManageUsers { get; set; } = true;
     public bool CanViewReports { get; set; } = true;
     public bool CanManageSettings { get; set; } = true;
+    public bool CanApproveExpenses { get; set; } = false;
 }
 
 /// <summary>
@@ -35,7 +42,18 @@ public class GerantProfile : UserProfile
 {
     public string Zone { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
+    public string MobileNumber { get; set; } = string.Empty;
     public int MaxTransporteursManaged { get; set; } = 10;
+    public string Address { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string PostalCode { get; set; } = string.Empty;
+    public string? EmergencyContact { get; set; }
+    public string? EmergencyPhone { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+    public string? Nationality { get; set; }
+    public string? LanguagesSpoken { get; set; }
+    public int YearsOfExperience { get; set; }
+    public string? PreviousEmployer { get; set; }
     public bool IsActive { get; set; } = true;
 }
 
@@ -48,6 +66,26 @@ public class TransporteurProfile : UserProfile
     public string VehicleType { get; set; } = string.Empty;
     public string VehiclePlate { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
+    public string MobileNumber { get; set; } = string.Empty;
+    public string Address { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string PostalCode { get; set; } = string.Empty;
+    public DateTime? LicenseExpiryDate { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+    public string? Nationality { get; set; }
+    public string? EmergencyContact { get; set; }
+    public string? EmergencyPhone { get; set; }
+    public string? VehicleMake { get; set; }
+    public string? VehicleModel { get; set; }
+    public int? VehicleYear { get; set; }
+    public string? VehicleColor { get; set; }
+    public string? InsuranceProvider { get; set; }
+    public string? InsurancePolicyNumber { get; set; }
+    public DateTime? InsuranceExpiryDate { get; set; }
+    public int YearsOfExperience { get; set; }
+    public string? LanguagesSpoken { get; set; }
+    public bool HasCommercialLicense { get; set; }
+    public bool HasHazmatCertification { get; set; }
     public bool IsAvailable { get; set; } = true;
     public Guid? AssignedGerantId { get; set; }
 }

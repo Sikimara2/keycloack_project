@@ -36,6 +36,33 @@ public class UserService
         return admin;
     }
 
+    public AdminProfile CreateAdminFromFullRegistration(string keycloakUserId, RegisterAdminRequestDto dto)
+    {
+        var admin = new AdminProfile
+        {
+            Id = Guid.NewGuid(),
+            KeycloakUserId = keycloakUserId,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Email = dto.Email,
+            Role = "admin",
+            Department = dto.Department,
+            EmployeeId = dto.EmployeeId,
+            PhoneNumber = dto.PhoneNumber,
+            JobTitle = dto.JobTitle,
+            OfficeLocation = dto.OfficeLocation,
+            DirectLine = dto.DirectLine,
+            HireDate = dto.HireDate,
+            ManagerName = dto.ManagerName,
+            CanManageUsers = dto.CanManageUsers,
+            CanViewReports = dto.CanViewReports,
+            CanManageSettings = dto.CanManageSettings,
+            CanApproveExpenses = dto.CanApproveExpenses
+        };
+        _admins.Add(admin);
+        return admin;
+    }
+
     public List<AdminProfile> GetAllAdmins() => _admins.ToList();
 
     public AdminProfile? GetAdminByKeycloakId(string keycloakUserId) =>
@@ -57,6 +84,35 @@ public class UserService
             Zone = dto.Zone,
             PhoneNumber = dto.PhoneNumber,
             MaxTransporteursManaged = dto.MaxTransporteursManaged
+        };
+        _gerants.Add(gerant);
+        return gerant;
+    }
+
+    public GerantProfile CreateGerantFromFullRegistration(string keycloakUserId, RegisterGerantRequestDto dto)
+    {
+        var gerant = new GerantProfile
+        {
+            Id = Guid.NewGuid(),
+            KeycloakUserId = keycloakUserId,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Email = dto.Email,
+            Role = "gerant",
+            Zone = dto.Zone,
+            PhoneNumber = dto.PhoneNumber,
+            MobileNumber = dto.MobileNumber,
+            MaxTransporteursManaged = dto.MaxTransporteursManaged,
+            Address = dto.Address,
+            City = dto.City,
+            PostalCode = dto.PostalCode,
+            EmergencyContact = dto.EmergencyContact,
+            EmergencyPhone = dto.EmergencyPhone,
+            DateOfBirth = dto.DateOfBirth,
+            Nationality = dto.Nationality,
+            LanguagesSpoken = dto.LanguagesSpoken,
+            YearsOfExperience = dto.YearsOfExperience,
+            PreviousEmployer = dto.PreviousEmployer
         };
         _gerants.Add(gerant);
         return gerant;
@@ -88,6 +144,45 @@ public class UserService
             VehiclePlate = dto.VehiclePlate,
             PhoneNumber = dto.PhoneNumber,
             AssignedGerantId = dto.AssignedGerantId
+        };
+        _transporteurs.Add(transporteur);
+        return transporteur;
+    }
+
+    public TransporteurProfile CreateTransporteurFromFullRegistration(string keycloakUserId, RegisterTransporteurRequestDto dto)
+    {
+        var transporteur = new TransporteurProfile
+        {
+            Id = Guid.NewGuid(),
+            KeycloakUserId = keycloakUserId,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Email = dto.Email,
+            Role = "transporteur",
+            LicenseNumber = dto.LicenseNumber,
+            VehicleType = dto.VehicleType,
+            VehiclePlate = dto.VehiclePlate,
+            PhoneNumber = dto.PhoneNumber,
+            MobileNumber = dto.MobileNumber,
+            Address = dto.Address,
+            City = dto.City,
+            PostalCode = dto.PostalCode,
+            LicenseExpiryDate = dto.LicenseExpiryDate,
+            DateOfBirth = dto.DateOfBirth,
+            Nationality = dto.Nationality,
+            EmergencyContact = dto.EmergencyContact,
+            EmergencyPhone = dto.EmergencyPhone,
+            VehicleMake = dto.VehicleMake,
+            VehicleModel = dto.VehicleModel,
+            VehicleYear = dto.VehicleYear,
+            VehicleColor = dto.VehicleColor,
+            InsuranceProvider = dto.InsuranceProvider,
+            InsurancePolicyNumber = dto.InsurancePolicyNumber,
+            InsuranceExpiryDate = dto.InsuranceExpiryDate,
+            YearsOfExperience = dto.YearsOfExperience,
+            LanguagesSpoken = dto.LanguagesSpoken,
+            HasCommercialLicense = dto.HasCommercialLicense,
+            HasHazmatCertification = dto.HasHazmatCertification
         };
         _transporteurs.Add(transporteur);
         return transporteur;
