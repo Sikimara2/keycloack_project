@@ -122,7 +122,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// HTTPS redirection disabled for development - frontend uses HTTP
+// app.UseHttpsRedirection();
 
 // IMPORTANT: CORS must come before Authentication/Authorization
 app.UseCors("AllowAngular");
